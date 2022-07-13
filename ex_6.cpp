@@ -12,36 +12,67 @@
 // Dica 3: 1184 e 1210 são amigos.
 
 #include <stdio.h>
-int retornaQuantidade(int num)
+int quantidadeDivisores(int num)
 {
-    int cont = 1;
-    bool continuar = true;
-    int temp = num;
-    //obter quantos digitos tem o numero
-    while (continuar)
+    //retorna a quantidade de divisores que o número tem
+    int temp = 0;
+    for (int i = 1; i < num; i ++)
     {
-        if (num / 10 != 0)
+        if (num % i == 0)
         {
-            cont++;
-            num = num / 10; 
+            temp++;
         }
-        else
-            continuar = false;
     }
-    return cont;
+    return temp;
 }
 
 bool amigos(int x, int y)
 {
+    //achar quantos divisores tem x e y;
+    int cont1, cont2;
+    cont1 = quantidadeDivisores(x);
+    cont2 = quantidadeDivisores(y);
+    //colocar os divisores nos vetores
+    int div_x[cont1], div_y[cont2], a = 0;
+    for (int i = 1; i < x; i ++)
+    {
+        if (x % i == 0)
+        {
+            div_x[a] = i;
+            a++;
+        }
+    }
+    a = 0;
+    for (int i = 1; i < y; i ++)
+    {   
+        if (y % i == 0)
+        {
+            div_y[a] = i;
+            a++;
+        }
+    }
+    int soma_x = 0, soma_y = 0;
+    //somar os números de cada vetor
+    for (int i = 0; i < cont1; i++)
+    {
+        soma_x += div_x[i];
+    }
 
-    retornaQuantidade(x);
-    retornaQuantidade(y);
+    for (int i = 0; i < cont2; i++)
+    {
+        soma_y += div_y[i];
+    }
 
-    
+    //comparar soma de x[] com y e soma de y[] com x e retornar true se forem iguais e false se forem diferentes
+    if (soma_x == y && soma_y == x)
+        return true;
+    else
+        return false;
 }
 
 int main()
 {
+    //lê x e y
     int x, y;
     printf("Digite x: ");
     scanf("%d", &x);
@@ -49,7 +80,12 @@ int main()
     printf("Digite y: ");
     scanf("%d", &y);
 
-    bool sim;
+    //verificar se são amigos
+    bool camaradas = true;
+    camaradas = amigos(x, y);
 
-    sim = amigos(x, y);
+    if (camaradas)
+        printf("Sao amigos");
+    else
+        printf("Nao sao amigos");
 }
